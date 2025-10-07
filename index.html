@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#ff7aa2" />
+<title>Fødselsdag — Af kærlighed 💕</title>
+
+<meta property="og:title" content="Fødselsdag — Af kærlighed 💕" />
+<meta property="og:description" content="Mobilvenlig invitation med tider, små overraskelser og konfetti ✨" />
+<meta property="og:type" content="website" />
+
+<style>
+  :root{
+    /* Lys tema */
+    --bg1:#ffe3eb;--bg2:#ffcad6;--bg3:#ffb6a1;--bg4:#ff9a86;
+    --text:#3e272b;--muted:#7b6066;--leaf:#a03e56;
+    --card:rgba(255,255,255,0.92);
+    --chip:#fff1f5; --chip2:#ffe8f0; --accent:#ff7aa2; --link:#a03e56;
+  }
+  /* Gråtonet tema – tændes når 19:00 (2. del) åbnes */
+  body.gray{
+    --bg1:#1a1a1c;--bg2:#1f1f23;--bg3:#24242a;--bg4:#2b2b32;
+    --text:#f6f3f6;--muted:#c8c6cc;--leaf:#ff9ab6;
+    --card:rgba(30,30,36,0.9);
+    --chip:#23232a; --chip2:#2a2a31; --accent:#ff7aa2; --link:#ffd1e0;
+  }
+
+  html,body{height:100%;margin:0}
+  *{box-sizing:border-box}
+  body{
+    font-family:"Segoe UI", Roboto, Arial, sans-serif;
+    color:var(--text); display:flex; flex-direction:column; align-items:center;
+    padding:20px;
+    background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 35%,var(--bg3) 70%,var(--bg4) 100%);
+    transition:background .4s ease, color .4s ease;
+    overflow-x:hidden;
+  }
+
+  header{text-align:center;margin-top:6px}
+  h1{
+    margin:6px 0;font-size:2rem; letter-spacing:.3px;
+    background:linear-gradient(90deg,#a33f55,var(--accent),#ffa7ba);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 1px 2px rgba(0,0,0,.1);
+  }
+  /* Lyserød titel i grå mode */
+  body.gray h1{
+    background:linear-gradient(90deg,#ff7aa2,#ffc2d4,#ffe2ec);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  .intro{text-align:center;margin-top:56px}
+  a.btn{
+    display:inline-block; text-decoration:none;
+    background:linear-gradient(135deg,#a33f55,var(--accent));
+    color:#fff; font-size:1.1rem; border-radius:999px;
+    padding:12px 24px; margin-top:18px;
+    box-shadow:0 8px 20px rgba(163,63,85,.35);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+
+  .card{
+    width:100%;max-width:560px;background:var(--card);backdrop-filter:blur(8px);
+    border-radius:20px;padding:18px;margin-top:20px;
+    box-shadow:0 14px 34px rgba(0,0,0,.14);
+    border:1px solid rgba(255,255,255,.65);
+    display:none;position:relative;overflow:hidden;
+    transition:background .3s ease, border-color .3s ease, box-shadow .3s ease;
+  }
+  body.gray .card{ border-color:rgba(255,255,255,.12); box-shadow:0 10px 30px rgba(0,0,0,.5); }
+
+  /* Vis kortet når hash = #invitation */
+  #invitation:target{display:block}
+
+  /* Egen scroll – så alt virker på mobil */
+  .scroll{
+    max-height:80vh; overflow:auto; overscroll-behavior:contain;
+    scroll-behavior:smooth; padding-right:4px;
+  }
+
+  .countdown{font-size:1.2rem;padding:12px;border-radius:12px;text-align:center;
+    color:var(--leaf);font-weight:800;
+    background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.85));
+    border:1px solid rgba(0,0,0,.04);
+  }
+  body.gray .countdown{ background:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.18)); border-color:rgba(255,255,255,.06); }
+
+  .event-info{margin-top:6px;text-align:center;opacity:.92}
+
+  .agenda{margin-top:14px}
+  .time-block{
+    padding:12px 14px;border-radius:14px;
+    background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(255,255,255,.9));
+    margin:12px 0;cursor:pointer;border:1px solid rgba(0,0,0,.03);
+    transition:transform .15s ease, box-shadow .15s ease, border-color .2s ease, background .2s ease;
+    position:relative; display:flex; align-items:flex-start; gap:10px;
+  }
+  body.gray .time-block{ background:linear-gradient(180deg,rgba(32,32,38,.9),rgba(38,38,44,.85)); border-color:rgba(255,255,255,.12); }
+  .time-block:hover{transform:translateY(-1px); box-shadow:0 10px 20px rgba(0,0,0,.08)}
+
+  .time-block strong{
+    display:inline-block; min-width:110px; color:var(--leaf); font-weight:800; padding:2px 10px; border-radius:999px;
+    background:linear-gradient(90deg,var(--chip),var(--chip2));
+    border:1px solid rgba(255,122,162,.25);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.6);
+  }
+  body.gray .time-block strong{ box-shadow:none; border-color:rgba(255,255,255,.12); }
+
+  /* Pil-ikon */
+  .arrow{font-size:1.05rem; line-height:1; margin-top:2px; user-select:none}
+  .arrow::before{content:"▸"; display:inline-block; transition:transform .15s ease}
+  .time-block.open .arrow::before{content:"▾"}
+
+  .label{flex:1 1 auto}
+  .details{display:none;margin-top:8px;font-size:.98rem; line-height:1.35}
+  .time-block.open .details{display:block}
+
+  /* Låseindikator */
+  .time-block.locked{cursor:not-allowed;}
+  .time-block.locked::after{
+    content:"🔒 Låst indtil " attr(data-unlock-human);
+    position:absolute; right:10px; top:8px; font-size:.82rem; color:var(--muted);
+  }
+
+  a{ color:var(--link); }
+  .footer{margin-top:16px;font-size:.9rem;color:rgba(68,44,46,.78)}
+  body.gray .footer{ color:rgba(240,240,245,.75) }
+
+  /* Konfetti – langsom & smooth */
+  .burst{position:fixed;left:0;top:0;width:0;height:0;pointer-events:none;z-index:9999;}
+  .burst .p{
+    position:absolute;width:8px;height:8px;border-radius:50%;
+    animation:boom 2.2s cubic-bezier(.17,.67,.32,1.35) forwards;
+    will-change:transform,opacity;
+  }
+  @keyframes boom{
+    0%{opacity:1;transform:translate(0,0) scale(1) rotate(0deg)}
+    100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.6) rotate(var(--rot))}
+  }
+
+  /* Tegneserie-tunge (vises når 3. del åbnes) */
+  #tongueWrap{display:none; text-align:center; margin:22px 0 6px}
+  #tongueSVG{width:200px; height:auto; filter:drop-shadow(0 6px 16px rgba(0,0,0,.15))}
+  .lick{animation:lick 2.6s ease-in-out infinite alternate}
+  @keyframes lick{
+    0%  {transform:rotate(0deg) translateY(0)}
+    50% {transform:rotate(5deg) translateY(-4px)}
+    100%{transform:rotate(-4deg) translateY(3px)}
+  }
+
+  /* Skjul intro automatisk i moderne browsere */
+  @supports(selector(:has(*))){
+    body:has(#invitation:target) #intro{display:none}
+  }
+
+  .small-note{font-size:.8rem; line-height:1.3; opacity:.95}
+  @media (max-width:390px){
+    .small-note{font-size:.78rem}
+    .time-block strong{min-width:98px}
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>🎉 Fødselsdag — Af kærlighed</h1>
+  </header>
+
+  <div class="intro" id="intro">
+    <p>En kærlig invitation til en særlig dag 💖</p>
+    <a class="btn" id="openBtn" href="#invitation">Åbn invitation</a>
+  </div>
+
+  <div class="card scroll" id="invitation" aria-live="polite">
+    <div class="countdown" id="countdown">Indlæser nedtælling…</div>
+    <div class="event-info" id="eventInfo">Onsdag d. 8. oktober 2025 kl. 16:00 (København)</div>
+
+    <div class="agenda" id="agenda">
+      <!-- 1) Altid åben -->
+      <div class="time-block" data-idx="0">
+        <span class="arrow" aria-hidden="true"></span>
+        <div class="label">
+          <strong>16:00</strong> – Mødested
+          <div class="details"><b>Hos Rasmus ❤️</b></div>
+        </div>
+      </div>
+
+      <!-- 2) Altid åben -->
+      <div class="time-block" data-idx="1">
+        <span class="arrow" aria-hidden="true"></span>
+        <div class="label">
+          <strong>16:00–17:00</strong> – Hygge og gaver
+          <div class="details"><b>Hygge, drikke og gaveudpakning 💝</b></div>
+        </div>
+      </div>
+
+      <!-- 3) Låst til 17:00 -->
+      <div class="time-block locked" data-unlock="2025-10-08T17:00:00" data-idx="2">
+        <span class="arrow" aria-hidden="true"></span>
+        <div class="label">
+          <strong>17:00</strong> – Cykeltur til arrangement
+          <div class="details"><b>Afgang på cykel til Chello's 🚲</b></div>
+        </div>
+      </div>
+
+      <!-- 4) Låst til 17:30 -->
+      <div class="time-block locked" data-unlock="2025-10-08T17:30:00" data-idx="3">
+        <span class="arrow" aria-hidden="true"></span>
+        <div class="label">
+          <strong>17:30</strong> – 1. del
+          <div class="details"><b>Pizza og øl ad libitum! 🍻🍕</b></div>
+        </div>
+      </div>
+
+      <!-- 5) 19:00 – 2. del (overskrift synlig; dropdown låst til 19:00) -->
+      <div class="time-block locked" data-unlock="2025-10-08T19:00:00" data-idx="4" id="pica">
+        <span class="arrow" aria-hidden="true"></span>
+        <div class="label">
+          <strong>19:00</strong> – 2. del
+          <div class="details">
+            <b>Aperitif på Pica Pica 🍷</b><br>
+            Et glas (eller to) på Pica Pica 🍷
+          </div>
+        </div>
+      </div>
+
+      <!-- 6) Låst til 20:00 -->
+      <div class="time-block locked" data-unlock="2025-10-08T20:00:00" data-idx="5">
+        <span class="arrow" aria-hidden="true"></span>
+        <div class="label">
+          <strong>ca. 20:00</strong> – Noget lækkerhed
+          <div class="details"><b>Noget lækkerhed af føleser indtages ⚪️💊</b></div>
+        </div>
+      </div>
+
+      <!-- 7) Låst til 20:00 – 3. del -->
+      <div class="time-block locked" data-unlock="2025-10-08T20:00:00" data-idx="6" id="lastBlock">
+        <span class="arrow" aria-hidden="true"></span>
+        <div class="label">
+          <strong>20:00–22:00</strong> – 3. del
+          <div class="details">
+            <b>Norsk Indiepop-rock! Med et strejf af religiøsitet 🇳🇴🎸✨🙏</b>
+            <div class="small-note" style="margin-top:10px">
+              <b>Highasakite 🇳🇴</b> — Storslået norsk indiepop-duo med stærke melodier og intense koncerter.
+              Rekordalbummet <i>Silent Treatment</i> lå 134 uger på hitlisten.
+              👉 <a href="https://da.wikipedia.org/wiki/Highasakite" target="_blank" rel="noopener">Læs mere</a><br>
+              <b>Warm-up: CEVIL 🇩🇰</b> — Cecilie Vahle (24). Kompromisløs pop med retro/hyperpop-præg; “anti-fabrikkeret”, original og integritetsfyldt.
+              Debut: <i>Don't Speak</i> (2023). Ros fra Soundvenue/Politiken, airplay på P3; samarbejder i KBH og support for Nicklas Sahl.
+            </div>
+            <div id="tongueWrap">
+              <svg id="tongueSVG" class="lick" viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg" aria-label="Tegneserie-tunge">
+                <defs>
+                  <linearGradient id="gTongue" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0" stop-color="#ff4f75"/><stop offset="1" stop-color="#ff7aa2"/>
+                  </linearGradient>
+                  <linearGradient id="gMouth" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0" stop-color="#5c0920"/><stop offset="1" stop-color="#2a0310"/>
+                  </linearGradient>
+                </defs>
+                <path d="M30,70 Q120,0 210,70 Q170,110 120,120 Q70,110 30,70 Z" fill="#ff99b3" stroke="#a33f55" stroke-width="4"/>
+                <path d="M45,78 Q120,25 195,78 Q165,120 120,130 Q75,120 45,78 Z" fill="url(#gMouth)"/>
+                <path d="M95,92 q25,20 0,60 q40,10 50,0 q-20,-40 5,-60 q-30,-10 -55,0 z"
+                      fill="url(#gTongue)" stroke="#b42046" stroke-width="3"/>
+                <ellipse cx="130" cy="120" rx="12" ry="6" fill="rgba(255,255,255,.35)"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">Lavet med kærlighed ❤️ — del linket i din SMS</div>
+
+<script>
+  /* Konfetti – rolig/smooth */
+  const COLORS=['#ff6b8a','#ffb3c1','#ffd166','#06d6a0','#118ab2','#ef476f','#ff9f1c','#8338ec','#ffffff'];
+  function burst(x,y,count=160,spread=200,speed=0.9){
+    const c=document.createElement('div');c.className='burst';document.body.appendChild(c);
+    for(let i=0;i<count;i++){const p=document.createElement('div');p.className='p';
+      const a=Math.random()*2*Math.PI;const d=(spread*0.4+Math.random()*spread)*speed;
+      p.style.setProperty('--dx',Math.cos(a)*d+'px');p.style.setProperty('--dy',Math.sin(a)*d+'px');
+      p.style.setProperty('--rot',(Math.random()*720-360)+'deg');p.style.background=COLORS[(Math.random()*COLORS.length)|0];
+      p.style.left=x+'px';p.style.top=y+'px';c.appendChild(p);}
+    setTimeout(()=>c.remove(),2200);
+  }
+  function burstCenter(mult=1){const cx=innerWidth/2+scrollX,cy=innerHeight/2+scrollY-40;burst(cx,cy,220*mult,280*mult,0.9*mult);}
+
+  /* Åbn kort via hash + konfetti-brag første visning */
+  function syncHashView(){
+    const show=location.hash==='#invitation';
+    const intro=document.getElementById('intro');
+    const card=document.getElementById('invitation');
+    intro.style.display=show?'none':'block';
+    if(show&&card.style.display!=='block'){card.style.display='block';burstCenter(1);}
+  }
+  addEventListener('hashchange',syncHashView); syncHashView();
+
+  /* Haptisk feedback */
+  function haptic(ms=18){ try{ if(navigator.vibrate) navigator.vibrate(ms);}catch(e){} }
+
+  /* Låse-logik (fold-ud låst til tid) */
+  const blocks=[...document.querySelectorAll('.time-block')];
+  function fmtHM(dt){ try{ return new Date(dt).toLocaleString('da-DK',{hour:'2-digit',minute:'2-digit'});}catch{ return ''; } }
+  function refreshLocks(){
+    const now=new Date();
+    for(const el of blocks){
+      const iso=el.getAttribute('data-unlock');
+      if(!iso){ el.classList.remove('locked'); continue; } // 16:00 og 16-17 har ingen lås
+      const unlock=new Date(iso);
+      const unlocked = now >= unlock;
+      el.classList.toggle('locked', !unlocked);
+      el.setAttribute('data-unlock-human', fmtHM(unlock));
+    }
+  }
+  refreshLocks();
+  setInterval(refreshLocks, 15000);
+
+  /* Gem åbne punkter pr. enhed */
+  const OPEN_KEY='inv_open_locked_v2';
+  function loadOpen(){ try{return JSON.parse(localStorage.getItem(OPEN_KEY)||'[]')}catch(e){return[]} }
+  function saveOpen(arr){ try{localStorage.setItem(OPEN_KEY,JSON.stringify(arr))}catch(e){} }
+
+  /* Klik-adfærd */
+  document.getElementById('agenda').addEventListener('click',e=>{
+    const b=e.target.closest('.time-block'); if(!b) return;
+
+    // Låst? — vibration + lille konfetti, men ingen open-toggle
+    if(b.classList.contains('locked')){
+      haptic(30);
+      const r0=b.getBoundingClientRect();
+      burst(r0.left+r0.width-24+scrollX, r0.top+12+scrollY, 22, 46, .7);
+      return;
+    }
+
+    const opening=!b.classList.contains('open');
+    b.classList.toggle('open', opening);
+    haptic(18);
+
+    const r=b.getBoundingClientRect();
+    burst(r.left+r.width/2+scrollX, r.top+6+scrollY, opening?90:60, opening?120:80, 0.8);
+    b.scrollIntoView({behavior:'smooth', block:'center'});
+
+    const open=new Set(loadOpen());
+    const id=+b.dataset.idx;
+    if(opening) open.add(id); else open.delete(id);
+    saveOpen([...open]);
+
+    // Når 19:00 (2. del) åbnes → skift til gråtonet tema
+    if(b.id==='pica' && opening){
+      document.body.classList.add('gray');
+    }
+
+    // Når sidste punkt (3. del) åbnes → vis tunge
+    if(b.id==='lastBlock' && opening){
+      document.getElementById('tongueWrap').style.display='block';
+    }
+  });
+
+  /* Robust nedtælling: 8. okt 2025 kl. 16:00 København (CEST = UTC+2) */
+  // Lås måltid til UTC, så alle enheder ser korrekt nedtælling
+  const targetUTC = Date.UTC(2025, 9, 8, 14, 0, 0); // 9 = oktober; 16:00 CEST -> 14:00 UTC
+  const countdownEl = document.getElementById('countdown');
+  const eventInfoEl = document.getElementById('eventInfo');
+
+  // Vis altid menneskeligt tidspunkt i Københavns-tid
+  try {
+    const cphFmt = new Intl.DateTimeFormat('da-DK',{
+      timeZone:'Europe/Copenhagen', weekday:'long', year:'numeric',
+      month:'long', day:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+    eventInfoEl.textContent = cphFmt.format(new Date(targetUTC));
+  } catch(e){
+    eventInfoEl.textContent = "Onsdag d. 8. oktober 2025 kl. 16:00 (København)";
+  }
+
+  function pad(n){ return n.toString().padStart(2,'0'); }
+  function updateCountdown(){
+    const diff = targetUTC - Date.now(); // Date.now() er ms i UTC
+    if (diff <= 0){
+      countdownEl.textContent = "🎉 Det er nu! God fødselsdag! 💖";
+      return;
+    }
+    const sec = Math.floor(diff/1000);
+    const days = Math.floor(sec / (3600*24));
+    const hours = Math.floor((sec % (3600*24)) / 3600);
+    const minutes = Math.floor((sec % 3600) / 60);
+    const seconds = sec % 60;
+    const daysText = days > 0 ? days + " dage " : "";
+    countdownEl.textContent = `${daysText}${hours}t ${pad(minutes)}m ${pad(seconds)}s til feststart`;
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden) updateCountdown(); });
+</script>
+</body>
+</html>
